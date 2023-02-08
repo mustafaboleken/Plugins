@@ -118,7 +118,7 @@ public class WebpageRecordingPlugin implements ApplicationContextAware, IStreamL
 		args.add("--enable-tab-capture");
 		args.add("--no-sandbox");
 		args.add(String.format("--whitelisted-extension-id=%s", EXTENSION_ID));
-		args.add("--headless=chrome");
+		args.add("--headless=new");
 		try {
 			options.addExtensions(getExtensionFileFromResource());
 		} catch (IOException e) {
