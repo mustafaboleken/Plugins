@@ -9,6 +9,10 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -20,10 +24,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 @Component(value="plugin.webpageRecordingPlugin")
 public class WebpageRecordingPlugin implements ApplicationContextAware, IStreamListener{
@@ -85,6 +91,19 @@ public class WebpageRecordingPlugin implements ApplicationContextAware, IStreamL
 				.sendKeys("k")
 				.perform();
 		 */
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(Duration.ofSeconds(30))
+				.pollingEvery(Duration.ofSeconds(5))
+				.ignoring(NoSuchElementException.class);
+
+		WebElement foo = wait.until(new Function<WebDriver, WebElement>() {
+										public WebElement apply(WebDriver driver) {
+											return driver.findElement(By.id("participant_name"));
+										}
+									});
+
+		driver.findElement(By.id("participant_name")).sendKeys("test");
+		driver.findElement(By.id("room_join_button")).click();
 	}
 
 	public ResponsePair stopWebpageRecording(String streamId) throws InterruptedException {
