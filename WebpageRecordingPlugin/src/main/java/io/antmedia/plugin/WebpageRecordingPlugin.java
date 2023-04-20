@@ -32,7 +32,7 @@ public class WebpageRecordingPlugin implements ApplicationContextAware, IStreamL
 	protected static Logger logger = LoggerFactory.getLogger(WebpageRecordingPlugin.class);
 	private final String EXTENSION_ID = "anoaibdoojapjdknicdngigmlijaanik";
 
-	private HashMap<String, WebDriver> drivers = new HashMap<String, WebDriver>();
+	private final HashMap<String, WebDriver> drivers = new HashMap<String, WebDriver>();
 
 	private Vertx vertx;
 	private ApplicationContext applicationContext;
@@ -80,7 +80,7 @@ public class WebpageRecordingPlugin implements ApplicationContextAware, IStreamL
 	public void customModification(WebDriver driver) {
 		// you add related selenium code here to play the video on a custom page or login to a page
 
-		/* example code to start YouTube video
+        /* example code to start YouTube video
 		new Actions(driver)
 				.sendKeys("k")
 				.perform();
@@ -117,12 +117,12 @@ public class WebpageRecordingPlugin implements ApplicationContextAware, IStreamL
 		args.add("--disable-infobars");
 		args.add("--enable-tab-capture");
 		args.add("--no-sandbox");
-		args.add(String.format("--whitelisted-extension-id=%s", EXTENSION_ID));
+		args.add(String.format("--allowlisted-extension-id=%s", EXTENSION_ID));
 		args.add("--headless=new");
 		try {
 			options.addExtensions(getExtensionFileFromResource());
 		} catch (IOException e) {
-			logger.error(e.getMessage());
+			logger.error("Error while loading extension file: " + e.getMessage());
 			return null;
 		}
 		options.addArguments(args);
@@ -143,7 +143,7 @@ public class WebpageRecordingPlugin implements ApplicationContextAware, IStreamL
 		}
 
 	}
-	
+
 	public AntMediaApplicationAdapter getApplication() {
 		return (AntMediaApplicationAdapter) applicationContext.getBean(AntMediaApplicationAdapter.BEAN_NAME);
 	}
@@ -165,13 +165,13 @@ public class WebpageRecordingPlugin implements ApplicationContextAware, IStreamL
 	@Override
 	public void joinedTheRoom(String roomId, String streamId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void leftTheRoom(String roomId, String streamId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
