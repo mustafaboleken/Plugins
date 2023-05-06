@@ -112,6 +112,7 @@ public class WebpageRecordingPlugin implements ApplicationContextAware, IStreamL
 		ChromeOptions options = new ChromeOptions();
 		List<String> args = new ArrayList<>();
 
+		args.add("--remote-allow-origins=*");
 		args.add("--enable-usermedia-screen-capturing");
 		args.add("--allow-http-screen-capture");
 		args.add("--disable-infobars");
