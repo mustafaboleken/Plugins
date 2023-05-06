@@ -14,6 +14,23 @@ You can record the broadcast if needed. But you need to start the recording manu
 
 ## How to Install
 
+### Install Google Chrome 112
+
+Webpage Recording Plugin uses Google Chrome 112 to broadcast the web page. So you need to install Google Chrome 112 to your server. You can install it on Ubuntu with the following commands.
+
+
+    ```
+    wget --no-verbose -O /tmp/chrome.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_112.0.5615.165-1_amd64.deb
+    ```
+
+    ```
+    sudo apt install -y /tmp/chrome.deb
+    ```
+
+    ```
+    rm /tmp/chrome.deb
+    ```
+
 ### Clone the repository
 
     ```
