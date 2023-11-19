@@ -16,13 +16,19 @@
 			"run_at": "document_start"
 		}
 	],
+	"externally_connectable": {
+		"matches": [
+			"<all_urls>"
+		]
+	},
 	"permissions": [
 		"desktopCapture",
 		"<all_urls>",
 		"downloads",
 		"tabCapture",
 		"activeTab",
-		"tabs"
+		"tabs",
+		"storage"
 	],
   "content_security_policy":"script-src 'self' https://apis.google.com; object-src 'self'"
 }
