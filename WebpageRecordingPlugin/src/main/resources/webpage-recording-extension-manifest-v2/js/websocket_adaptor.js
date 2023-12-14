@@ -88,7 +88,7 @@ export class WebSocketAdaptor
             } else if (obj.command == "takeConfiguration") {
 
                 if (this.debug) {
-                    console.debug("received remote description type for stream id: " + obj.streamId + " type: " + obj.type );
+                    console.debug("received remote description type for stream id: " + obj.streamId  type: " + obj.type );
                 }
                 this.webrtcadaptor.takeConfiguration(obj.streamId, obj.sdp, obj.type, obj.idMapping);
 

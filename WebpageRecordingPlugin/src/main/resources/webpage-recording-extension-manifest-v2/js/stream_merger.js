@@ -45,7 +45,7 @@ export class StreamMerger{
   }
   changeStreamSize(height){
     this.stream_height = height;
-    console.log("Changing merged streams size to = " + height + "p");
+    console.log("Changing merged streams size to = " + height p");
     this.resizeAndSortV2();
   }
 
@@ -119,7 +119,7 @@ export class StreamMerger{
             stream.x += xoffset;
             stream.width = this.pwidth;
             stream.height = this.pheight;
-            console.log("Location offset from metadata x = " + stream.x + " y = " + stream.y);
+            console.log("Location offset from metadata x = " + stream.x  y = " + stream.y);
           }
         }
       }
@@ -221,14 +221,14 @@ export class StreamMerger{
       this.canvas.setAttribute('height', this.height);
 
       console.log("Row number = " + yNumber)
-      console.log("canvas width = " + this.width + "canvas height = " + this.height);
+      console.log("canvas width = " + this.width canvas height = " + this.height);
 
       var extraStreams = this.streams.length - (yNumber * yNumber);
       let tmp = 0;
       for( let i = 1; i <= this.streams.length; i++ ){
 
-        console.log("extraStreams = " + extraStreams + " stream length = " + this.streams.length)
-        console.log("Xindex = " + xindex + "Yindex = " + yindex);
+        console.log("extraStreams = " + extraStreams  stream length = " + this.streams.length)
+        console.log("Xindex = " + xindex Yindex = " + yindex);
 
         const stream = this.streams[i-1];
         if(extraStreams <= 0 || this.streams.length <= 3){
@@ -255,7 +255,7 @@ export class StreamMerger{
             stream.y = (this.vheight * yindex) - heightOffset;
           }
           tmp += (this.width) / (divider)
-          console.log("Video width = " + stream.width + "Video height = " + stream.height);
+          console.log("Video width = " + stream.width Video height = " + stream.height);
 
           if(xindex == 0){
             cropHeight = cropHeight + stream.height;
@@ -264,7 +264,7 @@ export class StreamMerger{
 
           xindex ++;
           if(yindex >= (yNumber)-1 && this.streams.length != 1){
-            console.log("TopWidth = " + topWidth + " remainingStreams = " + remainingStreams);
+            console.log("TopWidth = " + topWidth  remainingStreams = " + remainingStreams);
             widthOffset = (topWidth - (this.vwidth * remainingStreams )) / 2;
             stream.x += widthOffset;
           }  
@@ -301,7 +301,7 @@ export class StreamMerger{
           }
           cropWidth = cropWidth + ((this.width) / (divider + 1))
           
-          console.log("Video Width = " + stream.width + "VideoHeight = " + stream.height);
+          console.log("Video Width = " + stream.width VideoHeight = " + stream.height);
 
           if(xindex == 0){
             cropHeight = cropHeight + stream.height;

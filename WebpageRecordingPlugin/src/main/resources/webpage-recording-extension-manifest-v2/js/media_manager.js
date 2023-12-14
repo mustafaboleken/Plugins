@@ -269,7 +269,7 @@ export class MediaManager
 				}
 			}
 		}).catch(err => {
-			console.error("Cannot get devices -> error name: " + err.name + ": " + err.message);
+			console.error("Cannot get devices -> error name: " + err.name : " + err.message);
 		});
 	}
 
@@ -1004,7 +1004,7 @@ export class MediaManager
 				 }
 			 };
 			 //If no matching device found don't adjust the media constraints let it be true instead of a device ID
-			 console.debug("Given deviceId = " + deviceId + " - Media constraints video property = " + this.mediaConstraints.video);
+			 console.debug("Given deviceId = " + deviceId  - Media constraints video property = " + this.mediaConstraints.video);
 			 return this.setVideoCameraSource(streamId, this.mediaConstraints, null, true, deviceId);
 		 })
  
@@ -1340,7 +1340,7 @@ export class MediaManager
         	alert(e);
         	return;
       	}
-      	// console.log("Added sound meter for stream: " + streamId + " = " + soundMeter.instant.toFixed(2));
+      	// console.log("Added sound meter for stream: " + streamId  = " + soundMeter.instant.toFixed(2));
     	});
   	}
     

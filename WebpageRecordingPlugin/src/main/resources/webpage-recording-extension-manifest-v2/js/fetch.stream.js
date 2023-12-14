@@ -14,7 +14,7 @@ if (!String.prototype.endsWith)
 }
 
 export function tryToPlay(name, token, type, subscriberId, subscriberCode, noStreamCallback) {
-	fetch("streams/"+ name +"_adaptive."+type+"?token=" + token + "&subscriberId="+subscriberId +"&subscriberCode="+subscriberCode, {method:'HEAD'})
+	fetch("streams/"+ name +"_adaptive."+type+"?token=" + token &subscriberId="+subscriberId +"&subscriberCode="+subscriberCode, {method:'HEAD'})
 	.then(function(response) {
 		if (response.status == 200) {
 			// adaptive m3u8 & mpd exists,play it
@@ -23,7 +23,7 @@ export function tryToPlay(name, token, type, subscriberId, subscriberCode, noStr
 		else 
 		{
 			//adaptive not exists, try mpd or m3u8 exists.
-			fetch("streams/"+ name +"."+type+"?token=" + token + "&subscriberId="+subscriberId +"&subscriberCode="+subscriberCode, {method:'HEAD'})
+			fetch("streams/"+ name +"."+type+"?token=" + token &subscriberId="+subscriberId +"&subscriberCode="+subscriberCode, {method:'HEAD'})
 			.then(function(response) {
 				if (response.status == 200) {
 					initializePlayer(name, type, token, subscriberId, subscriberCode);

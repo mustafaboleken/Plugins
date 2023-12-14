@@ -1,6 +1,6 @@
 "use strict";
 
-import {WebRTCAdaptor} from "./js/webrtc_adaptor.js"
+import { WebRTCAdaptor } from "./js/webrtc_adaptor.js"
 
 let antMediaState = {
     READY: "ready",
@@ -25,7 +25,7 @@ chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => 
         webRTCAdaptorErrorCurrent = "";
     }
 
-    sendResponse({"streamId": message.streamId, "webRTCAdaptorState": webRTCAdaptorStateCurrent, "webRTCAdaptorError": webRTCAdaptorErrorCurrent});
+    sendResponse({ "streamId": message.streamId, "webRTCAdaptorState": webRTCAdaptorStateCurrent, "webRTCAdaptorError": webRTCAdaptorErrorCurrent });
 });
 
 function getVideoAudioStream(options) {
@@ -44,82 +44,62 @@ chrome.runtime.onConnect.addListener(port => {
     port.onMessage.addListener(async (message) => {
         console.log('GOT MESSAGE', message);
 
-        mediaConstraints = {
-            video : true,
-            audio : true,
-            videoConstraints : {
-                mandatory : {
-                    chromeMediaSource : 'tab',
-                    minFrameRate: 4,
-                    maxFrameRate: 20,
-                    maxWidth: 1920,
-                    maxHeight: 1280,
-                    minWidth: 640,
-                    minHeight: 480
-                }
-            }
-        };
-
-        /*if (message.width > 0 && message.height > 0) {
-            mediaConstraints = {
-                video : true,
-                audio : true,
-                videoConstraints : {
-                    mandatory : {
-                        chromeMediaSource : 'tab',
-                        minFrameRate: 4,
-                        maxFrameRate: 20,
-                        maxWidth : message.width,
-                        maxHeight : message.height,
-                        minWidth : message.width,
-                        minHeight : message.height
-                    }
-                }
-            };
-        } else {
-            mediaConstraints = {
-                video : true,
-                audio : true,
-                videoConstraints : {
-                    mandatory : {
-                        chromeMediaSource : 'tab',
-                        minFrameRate: 4,
-                        maxFrameRate: 20
-                    }
-                }
-            };
-        }
-        */
-
 
         if (message.command === 'WR_START_BROADCASTING') {
             let key = "webRTCAdaptorState";
 
-            localStorage.setItem(key, antMediaState.WAITING);     
-            let token = message.token;
+            localStorage.setItem(key, antMediaState.WAITING);
+            
+            let token = "";
+            let width = 1280;
+            let height = 720;
 
-            if (token == null || token == undefined) {
-                token = "";
+            if (message.token !== undefined) {
+                token = message.token;
+            }
+            if (message.width !== undefined && message.width > 0) {
+                width = message.width;
+            }
+            if (message.height !== undefined && message.height > 0) {
+                height = message.height;
             }
 
-            const stream = await getVideoAudioStream(mediaConstraints);
+            const media = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    mandatory: {
+                        chromeMediaSource: 'tab',
+                        chromeMediaSourceId: message.data
+                    }
+                },
+                video: {
+                    mandatory: {
+                        chromeMediaSource: 'tab',
+                        chromeMediaSourceId: message.data,
+                        minFrameRate: 10,
+                        maxFrameRate: 60,
+                        maxWidth: width,
+                        maxHeight: height,
+                        minWidth: 640,
+                        minHeight: 480
+                    }
+                }
+            });
 
             const track = stream.getVideoTracks()[0];
 
             const constra = {
-                width: { min: 640, ideal: 1280 },
-                height: { min: 480, ideal: 720 },
-                advanced: [{ width: 1920, height: 1280 }, { aspectRatio: 1.333 }],
+                width: { min: 640, ideal: width },
+                height: { min: 480, ideal: height },
+                advanced: [{ width: width, height: height }, { aspectRatio: 1.777778 }],
                 resizeMode: 'crop-and-scale'
             };
 
             track.applyConstraints(constra);
 
             webRTCAdaptor = new WebRTCAdaptor({
-                websocket_url : message.websocketURL,
-                mediaConstraints : mediaConstraints,
+                websocket_url: message.websocketURL,
                 localStream: stream,
-                callback : (info, obj) => {
+                callback: (info, obj) => {
                     if (info == "initialized") {
                         webRTCAdaptor.publish(message.streamId, token, "", "", "", "");
                     } else if (info == "publish_started") {
@@ -128,14 +108,14 @@ chrome.runtime.onConnect.addListener(port => {
                     }
                     console.log(info);
                 },
-                callbackError : function(error, message) {
+                callbackError: function (error, message) {
                     var errorMessage = JSON.stringify(error);
                     if (typeof message != "undefined") {
                         errorMessage = message;
                     } else {
                         errorMessage = JSON.stringify(error);
                     }
-        
+
                     if (error.indexOf("WebSocketNotConnected") != -1) {
                         errorMessage = "WebSocket is disconnected.";
                     } else if (error.indexOf("not_initialized_yet") != -1) {
@@ -147,7 +127,7 @@ chrome.runtime.onConnect.addListener(port => {
                             errorMessage = "Camera or Mic are not found or not allowed in your device";
                         } else if (error.indexOf("NotReadableError") != -1 || error.indexOf("TrackStartError") != -1) {
                             errorMessage = "Camera or Mic are already in use and they cannot be opened. Choose another video/audio source if you have on the page below ";
-        
+
                         } else if (error.indexOf("OverconstrainedError") != -1 || error.indexOf("ConstraintNotSatisfiedError") != -1) {
                             errorMessage = "There is no device found that fits your video and audio constraints. You may change video and audio constraints"
                         } else if (error.indexOf("NotAllowedError") != -1 || error.indexOf("PermissionDeniedError") != -1) {
@@ -169,9 +149,9 @@ chrome.runtime.onConnect.addListener(port => {
                         }
                     }
                     if (message !== undefined) {
-                        console.log("error callback: " + error + " message: " + errorMessage);
+                        console.log("error callback: " + error + " Message + " + errorMessage);
                     }
-        
+
                     let errorMessageKey = "webRTCAdaptorError";
                     localStorage.setItem(errorMessageKey, errorMessage);
                     localStorage.setItem(key, antMediaState.ERROR);
@@ -186,14 +166,14 @@ chrome.runtime.onConnect.addListener(port => {
             let key = "webRTCAdaptorState";
             let errorMessageKey = "webRTCAdaptorError";
 
-            chrome.storage.sync.get(["webRTCAdaptorState", "webRTCAdaptorError"], function(items) {
+            chrome.storage.sync.get(["webRTCAdaptorState", "webRTCAdaptorError"], function (items) {
                 console.log('State & latest error message retrieved', items);
                 port.postMessage({
                     command: 'WR_STATE',
                     state: items[0],
                     error: items[1]
                 });
-              });
+            });
         }
     });
 });

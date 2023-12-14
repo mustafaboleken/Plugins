@@ -568,7 +568,7 @@ export class WebRTCAdaptor
             else {
                 console.log("Candidate's protocol(full sdp: "+ event.candidate.candidate +") is not supported. Supported protocols: " + this.candidateTypes);
                 if (event.candidate.candidate != "") { //
-                    this.callbackError("protocol_not_supported", "Support protocols: " + this.candidateTypes.toString() + " candidate: " + event.candidate.candidate);
+                    this.callbackError("protocol_not_supported", "Support protocols: " + this.candidateTypes.toString()  candidate: " + event.candidate.candidate);
                 }
             }
         }
@@ -661,7 +661,7 @@ export class WebRTCAdaptor
         if (this.remotePeerConnection[streamId] == null)
         {
             var closedStreamId = streamId;
-            console.log("stream id in init peer connection: " + streamId + " close stream id: " + closedStreamId);
+            console.log("stream id in init peer connection: " + streamId  close stream id: " + closedStreamId);
             this.remotePeerConnection[streamId] = new RTCPeerConnection(this.peerconnection_config);
             this.remoteDescriptionSet[streamId] = false;
             this.iceCandidateList[streamId] = new Array();
@@ -870,8 +870,8 @@ export class WebRTCAdaptor
         })).then(response =>  {
 
             if (this.debug) {
-                console.debug("set remote description is succesfull with response: " + response + " for stream : "
-                + streamId + " and type: " + type);
+                console.debug("set remote description is succesfull with response: " + response  for stream : "
+                + streamId  and type: " + type);
                 console.debug(conf);
             }
 
@@ -981,7 +981,7 @@ export class WebRTCAdaptor
                     }
                 })
                 .catch((error) => {
-                    console.error("ice candiate cannot be added for stream id: " + streamId + " error is: " + error  );
+                    console.error("ice candiate cannot be added for stream id: " + streamId  error is: " + error  );
                     console.error(candidate);
                 });
             }
@@ -1008,7 +1008,7 @@ export class WebRTCAdaptor
                 this.gotDescription(configuration, streamId);
             })
             .catch((error) => {
-                console.error("create offer error for stream id: " + streamId + " error: " + error);
+                console.error("create offer error for stream id: " + streamId  error: " + error);
             });
         };
 
@@ -1371,7 +1371,7 @@ export class WebRTCAdaptor
                 alert(e);
                 return;
             }
-            console.log("Added sound meter for stream: " + streamId + " = " + soundMeter.instant.toFixed(2));
+            console.log("Added sound meter for stream: " + streamId  = " + soundMeter.instant.toFixed(2));
         });
 
         this.soundMeters[streamId] = soundMeter;
